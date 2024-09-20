@@ -11,13 +11,14 @@ const app = express()
 
 const PORT  = process.env.port || 3000
 
-// authentication 
+// in order to use the req.body in the auth controll
+app.use(express.json())
 
+// authentication 
 app.use("/api/auth", authRoutes)
 
-
 app.listen(PORT, ()=>{
-    console.log(`server is running on ${PORT}`)
+    console.log(`server is running on port ${PORT}`)
     connectDB()
 })
 
