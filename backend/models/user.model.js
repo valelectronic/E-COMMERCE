@@ -62,3 +62,6 @@ userSchema.methods.comparePassword = async function (password) {
 const User = mongoose.model("User", userSchema);
 
 export default User;
+
+
+// https://github.com/burakorkmez/mern-ecommerce/blob/master/backend/controllers/auth.controller.js
