@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+import cookieParser from 'cookie-parser'
 
 // importing the user routes 
 import authRoutes from "./routes/auth.route.js"
@@ -13,7 +14,7 @@ const PORT  = process.env.port || 3000
 
 // in order to use the req.body in the auth controll
 app.use(express.json())
-
+app.use(cookieParser());
 // authentication 
 app.use("/api/auth", authRoutes)
 
