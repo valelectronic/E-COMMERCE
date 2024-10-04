@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 
 // importing the user routes 
 import authRoutes from "./routes/auth.route.js"
+import productRoutes from "./routes/product.route.js"
 import { connectDB } from "./lib/db.js"
 
 dotenv.config()
@@ -12,11 +13,13 @@ const app = express()
 
 const PORT  = process.env.port || 3000
 
-// in order to use the req.body in the auth controll
+// in order to use the req.body in the auth controller
 app.use(express.json())
 app.use(cookieParser());
 // authentication 
 app.use("/api/auth", authRoutes)
+// products routes
+app.use("/api/products", productRoutes)
 
 app.listen(PORT, ()=>{
     console.log(`server is running on port ${PORT}`)
