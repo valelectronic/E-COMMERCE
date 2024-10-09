@@ -18,8 +18,6 @@ app.use(express.json())
 app.use(cookieParser());
 // authentication 
 app.use("/api/auth", authRoutes)
-// products routes
-app.use("/api/products", productRoutes)
 
 app.listen(PORT, ()=>{
     console.log(`server is running on port ${PORT}`)
