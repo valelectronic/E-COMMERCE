@@ -16,8 +16,9 @@ const PORT  = process.env.port || 3000
 // in order to use the req.body in the auth controller
 app.use(express.json())
 app.use(cookieParser());
-// authentication 
+// navigation routes
 app.use("/api/auth", authRoutes)
+app.use("/api/products", productRoutes)
 
 app.listen(PORT, ()=>{
     console.log(`server is running on port ${PORT}`)

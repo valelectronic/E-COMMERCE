@@ -5,6 +5,7 @@ import { redis } from "../lib/redis.js";
 import product from "../models/product.module.js";
 
 
+
  //getting all products functionality
  export const getAllProducts = async(req, res)=>{
 
@@ -98,4 +99,80 @@ export const deleteProduct = async (req, res) =>{
         
     }
 }
-//stopped at 1:52
+
+
+//getting the recommended products
+
+export const getRecommendedProducts = async(req, res)=>{
+    try {
+     const products = await product.aggregate([
+        {
+            $sample: {size:3}
+        },
+        {
+            $project:{
+                _id:1,
+                name:1,
+                description:1,
+                image:1,
+                price:1
+            }
+        }
+     ])
+     res.json(products)
+    } catch (error) {
+        console.log("Error in getRecommendedProducts controller ", error.message);
+        res.status(500).json({message:"serer error", error: error.message})
+        
+        
+    }
+}
+
+// get products by category
+ 
+export const getProductsByCategory = async(req,res)=>{
+
+const {category} = req.params;
+        try {
+            const products = await product.find({category});
+            res.json(products)
+        
+    } catch (error) {
+        console.log("Error in  getProductsByCategory controller ", error.message);
+        res.status(500).json({message:"serer error", error: error.message})
+        
+        
+    }
+}
+
+// get toggle featured products
+
+export const toggleFeaturedProducts = async(req,res)=>{
+    try {
+        const product = await product.findById(req.paras.id)
+        if(product){
+            product.isFeatured = !product.isFeatured
+            const updatedProduct = await product.save();
+            await updatedFeaturedProducts();
+            res.json(updatedProduct)
+        }else{
+            res.status(404).json({message:"product not found"});
+
+        }
+    } catch (error) {
+        console.log("Error in  toggleFeaturedProducts controller ", error.message);
+        res.status(500).json({message:"serer error", error: error.message})
+        
+    }
+}
+
+async function updatedFeaturedProducts(){
+    try {
+        // the lean() method is used to return plain javascript objects instead of full mongoose documents. this can significantly improve performance
+        const featuredProducts = await product.find({isFeatured:true}).lean()
+        await redis.set("featured_product", JSON.stringify(featuredProducts))
+    } catch (error) {
+        console.log("error in update cache function")
+        
+    }
+}
