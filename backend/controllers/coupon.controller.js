@@ -1,0 +1,42 @@
+import coupon from "../models/coupon.model.js";
+
+
+// getting the coupon code
+export const getCoupon = async(req,res)=>{
+    try {
+        const coupon = await coupon.findOne({userId: req.user._id, isActive: true})
+        res.json(coupon || null);
+
+    } catch (error) {
+        console.log("Error in  getCoupon controller ", error.message);
+        res.status(500).json({message:"serer error", error: error.message})
+        
+        
+    }
+}
+
+
+// validate coupon 
+export const validateCoupon = async(req, res)=>{
+    try {
+        const {code} = req.body;
+        const coupon = await coupon.findOne({userId: req.user._id, isActive: true})
+        if(!coupon){
+            return res.status(400).json({message: "coupon not found"})
+        }
+        if(coupon.expirationDate < new Date()){
+            coupon.isActive = false;
+            await coupon.save();
+            return res.status(400).json({message:"coupon expired"})
+        }
+        res.status({
+            message: "coupon is valid",
+            code:coupon.code,
+            discountPercentage:coupon.discountPercentage
+        })
+    } catch (error) {
+        console.log("Error in  validateCoupon controller ", error.message);
+        res.status(500).json({message:"serer error", error: error.message})
+        
+    }
+}

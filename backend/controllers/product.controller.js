@@ -72,7 +72,7 @@ export const createProduct = async (req, res)=>{
 
 }
 
-
+// delete product
 export const deleteProduct = async (req, res) =>{
     try {
         const product = await product.findById(req.params.id)
