@@ -9,6 +9,7 @@ import { connectDB } from "./lib/db.js"
 import cartRoutes from "./routes/cart.route.js"
 import couponRoutes from "./routes/coupon.route.js"
 import paymentRoutes from "./routes/payment.route.js"
+import analyticsRoutes from "./routes/payment.route.js"
 
 dotenv.config()
 // initializing the express app
@@ -25,6 +26,7 @@ app.use("/api/products", productRoutes)
 app.use("/api/cart",cartRoutes)
 app.use("/api/coupons",couponRoutes)
 app.use("/api/payments",paymentRoutes)
+app.use("/api/analytics",analyticsRoutes)
 
 app.listen(PORT, ()=>{
     console.log(`server is running on port ${PORT}`)
