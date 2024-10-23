@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon backend/server.js",
     "start": "node backend/server.js"
+
   },
   "author": "",
   "type": "module",
@@ -23,6 +24,7 @@
     "stripe": "^16.10.0"
   },
   "devDependencies": {
+    "concurrently": "^9.0.1",
     "nodemon": "^3.1.4"
   }
 }
