@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage"
 import SignUpPage from "./pages/SignUpPage"
 import LogInPage from "./pages/LogInPage"
 import ProfilePage from "./pages/ProfilePage"
+import AdminPage from "./pages/AdminPage"
 import Navbar from "./components/Navbar"
 import { Toaster } from "react-hot-toast"
 import { useUserStore } from "./components/useUserStore"
@@ -33,9 +34,10 @@ function App() {
     <Navbar/>
     <Routes>
     < Route path="/" element = {<HomePage/>}/>
-    < Route path="/signUpPage" element = { !user ?<SignUpPage/>: <Navigate to='/'/>}/>
-    < Route path="/loginPage" element = {!user ? <LogInPage/>:<Navigate to = '/'/>}/>
+    < Route path="/signUpPage" element = { !user?<SignUpPage/>: <Navigate to='/'/>}/>
+    < Route path="/loginPage" element = {!user? <LogInPage/>:<Navigate to = '/'/>}/>
     < Route path="/profilePage" element = {<ProfilePage/>}/>
+    < Route path="/AdminPage" element = {user?.role === "admin" ? <AdminPage/>: <Navigate to = "/logInPage"/>}/>
 
     </Routes>
     </div>
