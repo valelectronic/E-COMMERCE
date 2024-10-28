@@ -18,7 +18,7 @@ const app = express()
 const PORT  = process.env.port || 3000
 
 // in order to use the req.body in the auth controller
-app.use(express.json())
+app.use(express.json({limit:"10mb"}))
 app.use(cookieParser());
 // navigation routes
 app.use("/api/auth", authRoutes)

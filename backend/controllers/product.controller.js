@@ -6,6 +6,7 @@ import product from "../models/product.module.js";
 
 
 
+
  //getting all products functionality
  export const getAllProducts = async(req, res)=>{
 
@@ -49,21 +50,23 @@ export const getFeaturedProducts = async (req, res)=>{
 // create products 
 export const createProduct = async (req, res)=>{
     try {
-        
-        const {name, description, price, image, category} = req.body
-        let cloudinaryResponds = null;
-        if(image){
-            cloudinaryResponds = await cloudinary.uploader.upload(image, {folder: "products"})
-        }
+		const { name, description, price, image, category } = req.body;
 
-        const product = await product.create({
-            name,
-            description,
-            price,
-            image: cloudinaryResponds?.secure_url? cloudinaryResponds.secure_url:"",
-            category
-        })
-        res.status(201).json(product)
+		let cloudinaryResponse = null;
+
+		if (image) {
+			cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
+		}
+
+		const products = await product.create({
+			name,
+			description,
+			price,
+			image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
+			category,
+		});
+
+		res.status(201).json(products);
     } catch (error) {
         console.log("Error in createProduct controller ", error.message);
         res.status(500).json({message:"serer error", error: error.message})
