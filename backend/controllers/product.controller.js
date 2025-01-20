@@ -7,7 +7,7 @@ import product from "../models/product.module.js";
 
 
 
- //getting all products functionality
+ //getting all products functionality, accessible by all
  export const getAllProducts = async(req, res)=>{
 
     try {
@@ -78,12 +78,12 @@ export const createProduct = async (req, res)=>{
 // delete product
 export const deleteProduct = async (req, res) =>{
     try {
-        const product = await product.findById(req.params.id)
-        if(!product){
+        const products = await product.findById(req.params.id)
+        if(!products){
             return res.status(404).json({message: "product not found"})
         }
-        if(product.image){
-            const publicId = product.image.split("/").pop().split(".")[0]
+        if(products.image){
+            const publicId = products.image.split("/").pop().split(".")[0]
             try {
                 await cloudinary.uploader.destroy(`products/${publicId}`)
                 console.log("deleted image from cloudinary ")
@@ -150,13 +150,13 @@ const {category} = req.params;
 
 // get toggle featured products
 
-export const toggleFeaturedProducts = async(req,res)=>{
+export const toggleFeaturedProduct = async(req,res)=>{
     try {
-        const product = await product.findById(req.paras.id)
-        if(product){
-            product.isFeatured = !product.isFeatured
-            const updatedProduct = await product.save();
-            await updatedFeaturedProducts();
+        const products = await product.findById(req.params.id)
+        if(products){
+            products.isFeatured = !products.isFeatured
+            const updatedProduct = await products.save();
+            await updatedFeaturedProduct();
             res.json(updatedProduct)
         }else{
             res.status(404).json({message:"product not found"});
@@ -169,7 +169,7 @@ export const toggleFeaturedProducts = async(req,res)=>{
     }
 }
 
-async function updatedFeaturedProducts(){
+async function updatedFeaturedProduct(){
     try {
         // the lean() method is used to return plain javascript objects instead of full mongoose documents. this can significantly improve performance
         const featuredProducts = await product.find({isFeatured:true}).lean()

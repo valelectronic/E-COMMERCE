@@ -2,6 +2,7 @@ import Jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
 // next checks if a function exists , then proceed into calling another function
+
 export const protectRoute = async(req, res,next)=>{
     try {
         const accessToken = req.cookies.accessToken;
