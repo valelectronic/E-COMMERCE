@@ -5,6 +5,7 @@ import LogInPage from "./pages/LogInPage"
 import ProfilePage from "./pages/ProfilePage"
 import AdminPage from "./pages/AdminPage"
 import Navbar from "./components/Navbar"
+import CategoryPage from "./pages/categoryPage"
 import { Toaster } from "react-hot-toast"
 import { useUserStore } from "./stores/useUserStore"
 import { useEffect } from "react"
@@ -38,6 +39,8 @@ function App() {
     < Route path="/loginPage" element = {!user? <LogInPage/>:<Navigate to = '/'/>}/>
     < Route path="/profilePage" element = {<ProfilePage/>}/>
     < Route path="/AdminPage" element = {user?.role === "admin" ? <AdminPage/>: <Navigate to = "/logInPage"/>}/>
+    < Route path="/category/:category"
+     element = {<CategoryPage/>}/>
 
     </Routes>
     </div>

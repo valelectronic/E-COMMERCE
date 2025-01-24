@@ -1,13 +1,13 @@
 import CategoryItem from "../components/categoryItem";
 
 const categories = [
-	{ href: "/esp", name: "esp module", imageUrl: "/esp.jpeg" },
+	{ href: "/esp module", name: "esp module", imageUrl: "/esp.jpeg" },
 	{ href: "/casing", name: "casing", imageUrl: "/casing.jpeg" },
 	{ href: "/laptop", name: "laptop", imageUrl: "/laptop.jpg" },
-	{ href: "/power", name: "power", imageUrl: "/power.jpeg" },
-	{ href: "/sd", name: "sd card", imageUrl: "/sd.jpeg" },
+	{ href: "/power supply", name: "power supply", imageUrl: "/power.jpeg" },
+	{ href: "/sd card", name: "sd card", imageUrl: "/sd.jpeg" },
 	{ href: "/switch", name: "switch", imageUrl: "/switch.jpeg" },
-	{ href: "/wifi", name: "wifi module", imageUrl: "/wifi.jpeg" },
+	{ href: "/wifi module", name: "wifi module ", imageUrl: "/wifi.jpeg" },
 
 ];
 
