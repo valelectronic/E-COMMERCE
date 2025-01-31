@@ -106,30 +106,29 @@ export const deleteProduct = async (req, res) =>{
 
 //getting the recommended products
 
-export const getRecommendedProducts = async(req, res)=>{
-    try {
-     const products = await product.aggregate([
-        {
-            $sample: {size:3}
-        },
-        {
-            $project:{
-                _id:1,
-                name:1,
-                description:1,
-                image:1,
-                price:1
-            }
-        }
-     ])
-     res.json(products)
-    } catch (error) {
-        console.log("Error in getRecommendedProducts controller ", error.message);
-        res.status(500).json({message:"serer error", error: error.message})
-        
-        
-    }
-}
+export const getRecommendedProducts = async (req, res) => {
+	try {
+		const products = await product.aggregate([
+			{
+				$sample: { size: 3},
+			},
+			{
+				$project: {
+					_id: 1,
+					name: 1,
+					description: 1,
+					image: 1,
+					price: 1,
+				},
+			},
+		]);
+
+		res.json(products);
+	} catch (error) {
+		console.log("Error in getRecommendedProducts controller", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
 
 // get products by category
  

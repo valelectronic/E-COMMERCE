@@ -13,7 +13,7 @@ const couponSchema = await mongoose.Schema(
             min: 0,
             max: 100,
         },
-        expirationDte:{
+        expirationDate:{
             type: Date,
             required: true,
         },
