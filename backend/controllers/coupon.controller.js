@@ -4,8 +4,8 @@ import coupon from "../models/coupon.model.js";
 // getting the coupon code
 export const getCoupon = async(req,res)=>{
     try {
-        const coupon = await coupon.findOne({userId: req.user._id, isActive: true})
-        res.json(coupon || null);
+        const coupons = await coupon.findOne({userId: req.user._id, isActive: true})
+        res.json(coupons || null);
 
     } catch (error) {
         console.log("Error in  getCoupon controller ", error.message);
@@ -19,20 +19,20 @@ export const getCoupon = async(req,res)=>{
 // validate coupon 
 export const validateCoupon = async(req, res)=>{
     try {
-        const {code} = req.body;
-        const coupon = await coupon.findOne({userId: req.user._id, isActive: true})
-        if(!coupon){
+        const { code } = req.body;
+        const coupons = await coupon.findOne({code: code, userId: req.user._id, isActive: true})
+        if(!coupons){
             return res.status(400).json({message: "coupon not found"})
         }
-        if(coupon.expirationDate < new Date()){
-            coupon.isActive = false;
-            await coupon.save();
+        if(coupons.expirationDate < new Date()){
+            coupons.isActive = false;
+            await coupons.save();
             return res.status(400).json({message:"coupon expired"})
         }
-        res.status({
+        res.json({
             message: "coupon is valid",
-            code:coupon.code,
-            discountPercentage:coupon.discountPercentage
+            code:coupons.code,
+            discountPercentage:coupons.discountPercentage
         })
     } catch (error) {
         console.log("Error in  validateCoupon controller ", error.message);
