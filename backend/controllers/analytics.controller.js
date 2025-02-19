@@ -1,52 +1,32 @@
 import Order from "../models/order.model.js";
 import product from "../models/product.module.js";
-import User from "../models/user.model.js"
+import User from "../models/user.model.js";
 
+export const getAnalyticsData = async () => {
+	const totalUsers = await User.countDocuments();
+	const totalProducts = await product.countDocuments();
 
-export const analytics = async(req,res)=>{
-    try {
-        const analyticsData = await getAnalyticsData()
+	const salesData = await Order.aggregate([
+		{
+			$group: {
+				_id: null, // it groups all documents together,
+				totalSales: { $sum: 1 },
+				totalRevenue: { $sum: "$totalAmount" },
+			},
+		},
+	]);
 
-        const endDate = new Date();
-        const startDate = date(endDate.getTime() -7 * 24* 60* 60 * 1000);
-        const dailySalesData = await getDailySalesData(startDate, endDate);
+	const { totalSales, totalRevenue } = salesData[0] || { totalSales: 0, totalRevenue: 0 };
 
-        res.json({
-            analyticsData,
-            dailySalesData
-        })
+	return {
+		users: totalUsers,
+		products: totalProducts,
+		totalSales,
+		totalRevenue,
+	};
+};
 
-    } catch (error) {
-        console.log("Error in  analytics controller ", error.message);
-        res.status(500).json({message:"serer error", error: error.message})
-    }
-}
-
-// working on the getAnalytics function
-const getAnalyticsData = async()=>{
-    const totalUser = await User.countDocuments();
-    const totalProducts = await product.countDocuments();
-
-    const salesData = await Order.aggregate([
-        {
-            $group: {
-                _id: null ,// to group all documents together ,
-                totalSales: {$sum: 1},
-                totalRevenue: {$sum: "$totalAmount"}
-            }
-        }
-    ])
-    const {totalSales,totalRevenue} = salesData[0] || {totalSales:0, totalRevenue:0};
-    return{
-        users: totalUser,
-        products: totalProducts,
-        totalSales,
-        totalRevenue
-    }
-}
-
-// working on the getDailyData function
- const getDailySalesData = async (startDate, endDate) => {
+export const getDailySalesData = async (startDate, endDate) => {
 	try {
 		const dailySalesData = await Order.aggregate([
 			{
